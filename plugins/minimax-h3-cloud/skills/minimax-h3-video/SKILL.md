@@ -63,7 +63,7 @@ MP 是总像素量，P 是画面高度，两者会随画幅变化。以下只用
 
 ## 操作
 
-1. 首次配置时直接说明当前使用优云智算，并只提供两个可点击入口：[注册或登录](https://console.compshare.cn/)、[创建或管理 API Key](https://console.compshare.cn/uaccount/api_manage)。同时用一句话提示 MiniMax H3 受[社区许可证](https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE)及地域限制约束；不要单独显示欢迎页、平台选择页或“未来将支持更多平台”文案。
+1. 首次配置时直接说明当前使用优云智算，并只提供两个可点击入口：[注册或登录](https://passport.compshare.cn/register?referral_code=2N6NKqFVowEIxce0PT4kK)、[创建或管理 API Key](https://console.compshare.cn/uaccount/api_manage)。同时用一句话提示 MiniMax H3 受[社区许可证](https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE)及地域限制约束；不要单独显示欢迎页、平台选择页或“未来将支持更多平台”文案。
 2. 如果本机尚无隔离凭证配置，让用户自行在终端运行 `compshare config set --name <隔离名称> --no-activate`，通过官方隐藏输入录入 API Key。插件不得读取或回显密钥。提醒用户不要把 API Key 发到对话中，并请他完成后只回复“已完成”；随后立即结束当前回合。这个结束点是硬性边界，不得继续展示 GPU 配置页、生成模式、参数示例、费用说明或索要提示词。下一回合先验证凭证，成功时只简短报告“优云智算已连接”，再进入第 3 步。
 3. 凭证成功后运行 `scripts/h3-onboard options --platform compshare --credential-profile <隔离名称>`。优先使用 `request_user_input` 向用户展示一个 GPU 单选题，三个返回项按原顺序作为三个选项；选项描述合并 `priceDisplay`、`reason` 和必要的 `caveat`，不预选。如果客户端自动提供“其他”，明确告诉用户可用它提出配置需求或查看更多；没有该工具时才退化为编号列表，并增加“更多配置”。同时附上[优云 GPU 配置页](https://console.compshare.cn/light-gpu/console/resources)。`priceSource=reference` 时必须说明是历史参考价，创建前仍会刷新。
 4. 用户选择“其他/更多”或提出其他需求时，运行 `scripts/h3-onboard options --platform compshare --all --credential-profile <隔离名称>`，展示当前有库存的单卡规格和实时报价。列表只代表平台当前可售，不代表 MiniMax H3 已验证。

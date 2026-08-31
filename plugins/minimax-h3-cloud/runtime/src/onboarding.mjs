@@ -5,7 +5,7 @@ const PLATFORMS = Object.freeze({
   compshare: Object.freeze({
     id: "compshare",
     label: "优云智算",
-    registrationUrl: "https://console.compshare.cn/",
+    registrationUrl: "https://passport.compshare.cn/register?referral_code=2N6NKqFVowEIxce0PT4kK",
     apiKeyUrl: "https://console.compshare.cn/uaccount/api_manage",
     resourceConfigUrl:
       "https://console.compshare.cn/light-gpu/console/resources",
