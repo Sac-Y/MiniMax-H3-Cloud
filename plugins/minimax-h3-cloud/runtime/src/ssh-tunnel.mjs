@@ -152,7 +152,7 @@ export async function openSshTunnel({
   localHost = "127.0.0.1",
   localPort,
   connectTimeoutMs = 30_000,
-  sshPath = "/usr/bin/ssh",
+  sshPath = process.platform === "win32" ? "ssh.exe" : "/usr/bin/ssh",
   knownHostsPath,
 } = {}) {
   if (!user || !host || !password || !resourceId) {
@@ -173,12 +173,21 @@ export async function openSshTunnel({
   });
 
   const askpassDir = await mkdtemp(join(tmpdir(), "minimax-h3-askpass-"));
-  const askpassPath = join(askpassDir, "askpass.sh");
-  await writeFile(
-    askpassPath,
-    '#!/bin/sh\nprintf "%s\\n" "$MINIMAX_H3_SSH_PASSWORD"\n',
-    { mode: 0o700 },
-  );
+  let askpassPath;
+  if (process.platform === "win32") {
+    askpassPath = join(askpassDir, "askpass.cmd");
+    await writeFile(
+      askpassPath,
+      "@echo off\r\necho %MINIMAX_H3_SSH_PASSWORD%\r\n",
+    );
+  } else {
+    askpassPath = join(askpassDir, "askpass.sh");
+    await writeFile(
+      askpassPath,
+      '#!/bin/sh\nprintf "%s\\n" "$MINIMAX_H3_SSH_PASSWORD"\n',
+      { mode: 0o700 },
+    );
+  }
 
   const args = buildSshTunnelArgs({
     user,
